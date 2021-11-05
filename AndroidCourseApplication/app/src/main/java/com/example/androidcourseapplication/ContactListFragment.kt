@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toolbar
+import android.widget.*
 
 class ContactListFragment(_contactList : List<Contact>) : Fragment() {
 
@@ -18,7 +15,7 @@ class ContactListFragment(_contactList : List<Contact>) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val layout = inflater.inflate(R.layout.fragment_contact_details, container, false)
+        val layout = inflater.inflate(R.layout.fragment_contact_list, container, false)
 
         layout.findViewById<ImageView>(R.id.contact_photo).setImageResource(contactList[0].photo)
         layout.findViewById<TextView>(R.id.contact_name).text = contactList[0].name
