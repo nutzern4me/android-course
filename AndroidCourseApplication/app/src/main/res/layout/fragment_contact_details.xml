@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ContactDetailsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/details_photo"
+            android:layout_centerVertical="true"
+            android:layout_width="120dp"
+            android:layout_height="130dp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/details_name"
+            android:layout_width="250dp"
+            android:layout_height="130dp"
+            android:layout_margin="10dp"
+            android:text="Имя"
+            android:textSize="20sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="50dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/details_phone"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="Телефон"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/details_phone2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="Телефон2"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/details_email"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="e-mail"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/details_email2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="e-mail2"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/details_description"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="Description"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="50dp" />
+
+</LinearLayout>
