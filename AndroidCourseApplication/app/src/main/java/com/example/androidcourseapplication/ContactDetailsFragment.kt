@@ -9,26 +9,24 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toolbar
 
-class ContactDetailsFragment(_contact : Contact) : Fragment() {
+class ContactDetailsFragment() : Fragment(R.layout.fragment_contact_details) {
 
-    private val contact = _contact
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val layout = inflater.inflate(R.layout.fragment_contact_details, container, false)
+        val contact =
+            MainActivity.ContactStorage.contacts.find { contact -> contact.id == arguments?.get("ContactId") }
 
-        layout.findViewById<ImageView>(R.id.details_photo).setImageResource(contact.photo)
-        layout.findViewById<TextView>(R.id.details_name).text = contact.name
-        layout.findViewById<TextView>(R.id.details_phone).text = contact.phoneNum
-        layout.findViewById<TextView>(R.id.details_phone2).text = contact.phoneNum2
-        layout.findViewById<TextView>(R.id.details_email).text = contact.email
-        layout.findViewById<TextView>(R.id.details_email2).text = contact.email2
-        layout.findViewById<TextView>(R.id.details_description).text = contact.description
+        if (contact != null) {
+            view.findViewById<ImageView>(R.id.details_photo).setImageResource(contact.photo)
+            view.findViewById<TextView>(R.id.details_name).text = contact.name
+            view.findViewById<TextView>(R.id.details_phone).text = contact.phoneNum
+            view.findViewById<TextView>(R.id.details_phone2).text = contact.phoneNum2
+            view.findViewById<TextView>(R.id.details_email).text = contact.email
+            view.findViewById<TextView>(R.id.details_email2).text = contact.email2
+            view.findViewById<TextView>(R.id.details_description).text = contact.description
+        }
 
         activity?.findViewById<Toolbar>(R.id.toolbar)?.setTitle("Детали контакта")
-
-        return layout
     }
 }
