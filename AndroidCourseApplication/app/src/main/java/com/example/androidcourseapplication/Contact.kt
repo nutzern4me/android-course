@@ -1,7 +1,11 @@
 package com.example.androidcourseapplication
 
-class Contact(
-    val id: Int, val photo: Int, val name: String, val phoneNum: String, val phoneNum2: String,
-    val email: String, val email2: String, val description: String
+data class Contact(
+    val id: Int,
+    val photo: Int,
+    val name: String,
+    val phoneNums: List<String>,
+    val emails: List<String>,
+    val description: String
 ) {
 }

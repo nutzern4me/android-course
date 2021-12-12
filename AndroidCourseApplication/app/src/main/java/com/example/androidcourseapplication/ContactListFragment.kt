@@ -3,32 +3,32 @@ package com.example.androidcourseapplication
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.*
+import android.widget.Toolbar
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.LinearLayout
 
 class ContactListFragment() : Fragment(R.layout.fragment_contact_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val contact = MainActivity.ContactStorage.contacts[0]
+
+        val contact = ContactStorage.getContactList()[0]
 
         view.findViewById<ImageView>(R.id.contact_photo).setImageResource(contact.photo)
         view.findViewById<TextView>(R.id.contact_name).text = contact.name
-        view.findViewById<TextView>(R.id.contact_phone).text = contact.phoneNum
+        view.findViewById<TextView>(R.id.contact_phone).text = contact.phoneNums[0]
         view.findViewById<LinearLayout>(R.id.contact_card)
             .setOnClickListener { openDetails(contact.id) }
 
-        activity?.findViewById<Toolbar>(R.id.toolbar)?.setTitle("Список контактов")
+        requireActivity().findViewById<Toolbar>(R.id.toolbar)?.setTitle(R.string.contact_list)
     }
 
     private fun openDetails(contactId: Int) {
-        val detailsFragment = ContactDetailsFragment()
+        val detailsFragment = ContactDetailsFragment.newInstance(contactId)
 
-        val args = Bundle()
-        args.putInt("ContactId", contactId)
-        detailsFragment.arguments = args
-
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val transaction = requireActivity().supportFragmentManager?.beginTransaction()
         if (transaction != null)
             transaction
                 .replace(R.id.fragment_container, detailsFragment)
