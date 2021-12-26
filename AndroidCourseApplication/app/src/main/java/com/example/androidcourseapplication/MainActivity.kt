@@ -9,10 +9,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction
-            .add(R.id.fragment_container, ContactListFragment())
-            .addToBackStack("ContactList")
-            .commit()
+        if (savedInstanceState == null) {
+            val contactListFragment = ContactListFragment()
+
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction
+                .add(R.id.fragment_container, contactListFragment)
+                .addToBackStack("ContactList")
+                .commit()
+        }
     }
 }
