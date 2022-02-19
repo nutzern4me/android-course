@@ -1,86 +1,63 @@
 package com.example.androidcourseapplication
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
-import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toolbar
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.LinearLayout
+import java.lang.ref.WeakReference
 
-class ContactListFragment() : Fragment(R.layout.fragment_contact_list) {
+class ContactListFragment : Fragment(R.layout.fragment_contact_list) {
+    private var contactService: ContactService? = null
 
-    private lateinit var contactService: ContactService
-    private lateinit var contactBinder: ContactService.ContactBinder
-    private var bound = false
+    companion object {
+        fun newInstance() = ContactListFragment()
+    }
 
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            contactBinder = service as ContactService.ContactBinder
-            contactService = contactBinder.getService()
-            bound = true
-            showContactList()
-        }
+    fun setData(contacts: List<Contact>) {
+        val contact = contacts[0]
 
-        override fun onServiceDisconnected(name: ComponentName?) {
-            bound = false
+        requireActivity().runOnUiThread {
+            requireView().findViewById<ImageView>(R.id.contact_photo)
+                .setImageResource(contact.photo)
+            requireView().findViewById<TextView>(R.id.contact_name).text = contact.name
+            requireView().findViewById<TextView>(R.id.contact_phone).text = contact.phoneNums[0]
+            requireView().findViewById<LinearLayout>(R.id.contact_card)
+                .setOnClickListener { openDetails(contact.id) }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val intent = Intent(requireContext(), ContactService::class.java)
-        requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        if (context is IContactService) {
+            contactService = context.getService()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(bound)
-            showContactList()
+        contactService?.getContactList(WeakReference(this))
 
         requireActivity().findViewById<Toolbar>(R.id.toolbar)?.setTitle(R.string.contact_list)
-    }
-
-    private fun showContactList(){
-        val contact = contactBinder.getContactList()[0]
-
-        view?.findViewById<ImageView>(R.id.contact_photo)?.setImageResource(contact.photo)
-        view?.findViewById<TextView>(R.id.contact_name)?.text = contact.name
-        view?.findViewById<TextView>(R.id.contact_phone)?.text = contact.phoneNums[0]
-        view?.findViewById<LinearLayout>(R.id.contact_card)
-            ?.setOnClickListener { openDetails(contact.id) }
     }
 
     private fun openDetails(contactId: Int) {
         val detailsFragment = ContactDetailsFragment.newInstance(contactId)
 
-        val transaction = requireActivity().supportFragmentManager?.beginTransaction()
-        if (transaction != null)
-            transaction
-                .replace(R.id.fragment_container, detailsFragment)
-                .addToBackStack("ContactDetails")
-                .commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction
+            .replace(R.id.fragment_container, detailsFragment)
+            .addToBackStack("ContactDetails")
+            .commit()
     }
 
-    override fun onDestroyView() {
-        if (bound) {
-            requireActivity().unbindService(connection)
-            bound = false
-        }
-
-        super.onDestroyView()
+    override fun onDetach() {
+        contactService = null
+        super.onDetach()
     }
 }
